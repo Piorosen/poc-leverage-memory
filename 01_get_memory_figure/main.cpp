@@ -31,15 +31,19 @@ int main(int argc, char* argv[]) {
         }
     }
     
-    float* A, *B;
-    A = (float*)malloc(arg.M * arg.K * sizeof(float));
-    B = (float*)malloc(arg.K * arg.N * sizeof(float));
+    float* A = (float*)malloc(arg.M * arg.K * sizeof(float));
+    float* B = (float*)malloc(arg.K * arg.N * sizeof(float));
+    float* C = (float*)malloc(arg.M * arg.N * sizeof(float));
+
     compute::random(arg.M, arg.K, A);
+    compute::random(arg.K, arg.N, B);
+    
+    cout << compute::perform<milliseconds>(compute::gemm<float>, arg.M, arg.N, arg.K, A, B, C, 1, 0).count() << " ms\n";
     compute::print(arg.M, arg.K, A);
-    cout << compute::perform<milliseconds>(compute::transpose<float>, arg.M, arg.K, A, B).count() << " ms\n";
-    cout << compute::perform<milliseconds>(compute::transpose<float>, arg.M, arg.K, B, A).count() << " ms\n";
     cout << "\n\n";
-    compute::print(arg.M, arg.K, A);
+    compute::print(arg.K, arg.N, B);
+    cout << "\n\n";
+    compute::print(arg.M, arg.N, C);
     return 0;
 }
 

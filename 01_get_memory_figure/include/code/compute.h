@@ -34,18 +34,19 @@ namespace compute {
 
     template<typename T>
     void gemm(size_t M, size_t N, size_t K,
-              const T* A, const T* B, T* C,
-              T alpha = 1, T beta = 0) {
+                const T* A, const T* B, T* C,
+                T alpha = 1, T beta = 0) {
         for (size_t i = 0; i < M; ++i) {
             for (size_t j = 0; j < N; ++j) {
                 T sum = 0;
                 for (size_t k = 0; k < K; ++k) {
-                    sum += A[i * N + k] * B[k * N + j];
+                    sum += A[i * K + k] * B[k * N + j];
                 }
                 C[i * N + j] = alpha * sum + beta * C[i * N + j];
             }
         }
     }
+
     template<typename T>
     void random(size_t M, size_t N, T* A) {
         random_device rd;
