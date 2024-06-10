@@ -6,5 +6,8 @@
     "name" : "cxxopts",
     "version>=" : "3.2.1",
     "$comment" : "  # this is heuristically generated, and may not be correct\n\n  find_package(cxxopts CONFIG REQUIRED)\n\n  target_link_libraries(main PRIVATE cxxopts::cxxopts)\n"
+  }, {
+    "name" : "spdlog",
+    "version>=" : "1.14.1"
   } ]
 }

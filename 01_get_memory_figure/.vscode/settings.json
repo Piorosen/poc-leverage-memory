@@ -1,0 +1,18 @@
+{
+    "cmake.configureSettings": {
+        "CMAKE_TOOLCHAIN_FILE": "/home/rock/proj/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "CMAKE_MAKE_PROGRAM": "/usr/bin/ninja",
+        "CMAKE_C_COMPILER": "/usr/bin/gcc",
+        "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+    },
+    "cmake.configureEnvironment": {
+        "VCPKG_FORCE_SYSTEM_BINARIES": 1
+    },
+    "cmake.debugConfig": {
+        "args": [
+            "-v", "true", 
+            "-c", "true",
+            "-i", "main.es",
+        ]
+    },
+}
