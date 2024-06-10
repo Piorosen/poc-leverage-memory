@@ -3,11 +3,11 @@
 
 #include <code/args.h>
 #include <code/utils.h>
+#include <code/compute.h>
 
-// #include <code/compute.h>
+using namespace std;
+using namespace std::chrono;
 
-constexpr int X = 4;
-constexpr int Y = 8;
 int main(int argc, char* argv[]) {
     auto arg = args::parse_arguments(argc, argv);
     if (arg.verbose) { 
@@ -31,15 +31,15 @@ int main(int argc, char* argv[]) {
         }
     }
     
-    
-    // float* A, *B;
-    // A = (float*)malloc(X * Y * sizeof(float));
-    // B = (float*)malloc(Y * X * sizeof(float));
-    // random(Y, X, A);
-    // cout << perform<milliseconds>(transpose<float>, Y, X, A, B).count() << " ms\n";
-    // print(Y, X, A);
-    // cout << "\n\n";
-    // print(X, Y, B);
+    float* A, *B;
+    A = (float*)malloc(arg.M * arg.K * sizeof(float));
+    B = (float*)malloc(arg.K * arg.N * sizeof(float));
+    compute::random(arg.M, arg.K, A);
+    compute::print(arg.M, arg.K, A);
+    cout << compute::perform<milliseconds>(compute::transpose<float>, arg.M, arg.K, A, B).count() << " ms\n";
+    cout << compute::perform<milliseconds>(compute::transpose<float>, arg.M, arg.K, B, A).count() << " ms\n";
+    cout << "\n\n";
+    compute::print(arg.M, arg.K, A);
     return 0;
 }
 

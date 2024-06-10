@@ -5,13 +5,12 @@
 #ifndef COMPUTE_H
 #define COMPUTE_H
 
+#include <iostream>
 #include <chrono>
-#include <array>
 #include <random>
 
 using namespace std;
 using namespace std::chrono;
-
 
 namespace compute {
 
