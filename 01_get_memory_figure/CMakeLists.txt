@@ -11,7 +11,8 @@ set(CMAKE_SYSTEM_PROCESSOR arm)
 
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
 
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpthread -fconstexpr-steps=${CONSTEXPR_DEPTH} -fconstexpr-depth=${CONSTEXPR_DEPTH} -std=c++17")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpthread")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}-fconstexpr-steps=${CONSTEXPR_DEPTH} -fconstexpr-depth=${CONSTEXPR_DEPTH}")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
@@ -21,6 +22,7 @@ find_package(spdlog CONFIG REQUIRED)
 add_executable(measure_memory main.cpp
                                 src/utils.cpp
                                 src/args.cpp
+                                src/memory.cpp
 )
 
 
