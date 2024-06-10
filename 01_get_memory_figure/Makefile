@@ -8,3 +8,6 @@ install_cmake:
 	cd .. && \
 	rm -rf cmake-3.29.5-linux-aarch64/ cmake-3.29.5-linux-aarch64.tar.gz
 
+
+release:
+	

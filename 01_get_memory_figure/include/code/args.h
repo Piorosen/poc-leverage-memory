@@ -5,9 +5,10 @@
 
 namespace args {
     struct args {
-        bool verbose;
+        int repeat;
         int M, N, K;
         std::string output_file;
+        bool verbose;
     };
 
     args parse_arguments(int argc, char* argv[]);
