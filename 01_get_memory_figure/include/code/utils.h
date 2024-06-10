@@ -17,6 +17,7 @@ namespace utils {
     };
 
 #if !defined(_WIN64) && !defined(__APPLE__) && !defined(__OpenBSD__)
+    int get_cpu_core_count();
     std::vector<int> get_available_frequency(int core_pin);
     void set_cpu_frequency(int core_pin, int freq);
 

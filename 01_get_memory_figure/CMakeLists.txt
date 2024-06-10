@@ -15,12 +15,14 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-add_executable(measure_memory main.cpp
-                                src/utils.cpp
-)
-
 find_package(cxxopts CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+
+add_executable(measure_memory main.cpp
+                                src/utils.cpp
+                                src/args.cpp
+)
+
 
 
 target_link_libraries(measure_memory PRIVATE cxxopts::cxxopts)

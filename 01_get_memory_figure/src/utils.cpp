@@ -2,8 +2,28 @@
 #include <assert.h>
 #include <iostream>
 #include <fstream>
+#include <regex>
+#include <filesystem>
+#include <spdlog/spdlog.h>
 
 namespace utils {
+    int get_cpu_core_count() { 
+        const std::string path = "/sys/devices/system/cpu";
+        std::regex cpuRegex("^cpu[0-9]+$");
+        int coreCount = 0;
+
+        for (const auto& entry : std::filesystem::directory_iterator(path)) {
+            if (std::filesystem::is_directory(entry.status())) {
+                std::string dirName = entry.path().filename().string();
+                if (std::regex_match(dirName, cpuRegex)) {
+                    coreCount++;
+                }
+            }
+        }
+
+        return coreCount;
+    }
+
     std::vector<int> get_available_frequency(int core_pin) {
         std::vector<int> result;
         char buffer[256];
@@ -88,38 +108,25 @@ namespace utils {
         return false;
     }
 
-    std::vector<cluster> partition_core_freq(int core_count, bool verbose)
+    std::vector<cluster> partition_core_freq(int core_count)
     {
         std::vector<cluster> result;
 
-        std::vector<int> freq_tmp;
         cluster c;
         for (int i = 0; i < core_count; i++) {
             auto freq = get_available_frequency(i);
-            c.frequency = freq_tmp;
-            if (freq == freq_tmp || freq_tmp.empty()) {
+            if (freq == c.frequency || c.frequency.empty()) {
                 c.core.push_back(i);
             }else {
                 result.push_back(c);
                 c.core.clear();
-                c.frequency.clear();
+                c.core.push_back(i);
             }
-            freq_tmp = freq;
+            c.frequency = freq;
         }
 
         if (!c.core.empty() || !c.frequency.empty()) {
             result.push_back(c);
-        }
-
-        if (verbose) {
-            printf("\n");
-            for (int i = 0; i < result.size() ; i++) {
-                printf("[%02d] : ", i);
-                for (int c = 0; c < result[i].core.size(); c++) {
-                    printf("%d, ", result[i].core[c]);
-                }
-                printf("\n");
-            }
         }
 
         return result;
@@ -130,7 +137,7 @@ namespace utils {
         printf("%d   ]]]\n", core);
         int cpu_core = core;
 
-        auto cf = partition_core_freq(cpu_core, verbose);
+        auto cf = partition_core_freq(cpu_core);
         for (int i = 0; i < cf.size(); i++)
         {
             for (const auto &core : cf[i].core)

@@ -11,8 +11,13 @@
     "cmake.debugConfig": {
         "args": [
             "-v", "true", 
-            "-c", "true",
-            "-i", "main.es",
+            "-M", "512",
+            "-N", "512",
+            "-K", "512",
+            "-o", "./output.txt",
         ]
+    },
+    "files.associations": {
+        "chrono": "cpp"
     },
 }
