@@ -6,9 +6,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 SET(CONSTEXPR_DEPTH 10000000)
 
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpthread -fconstexpr-steps=${CONSTEXPR_DEPTH} -fconstexpr-depth=${CONSTEXPR_DEPTH} -std=c++17")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpthread -fconstexpr-steps=${CONSTEXPR_DEPTH} -fconstexpr-depth=${CONSTEXPR_DEPTH} -std=c++17")
+
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
 project(measure_memory)
 
 add_executable(measure_memory main.cpp
-        utils.h)
+                                src/utils.cpp
+)

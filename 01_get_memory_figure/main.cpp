@@ -1,30 +1,19 @@
 #include <iostream>
-#include <chrono>
 #include <array>
-#include "utils.h"
 
-using namespace std;
-using namespace std::chrono;
+#include <code/compute.h>
 
-template<typename T, size_t SIZE = 1, size_t SEED = __TIME_UNIX__>
-constexpr array<int, SIZE> get_random() {
-    array<T, SIZE> data;
-    const unsigned int a = 1664525;
-    const unsigned int c = 1013904223;
-    const unsigned int m = 0xFFFFFFFF; //2^32
-    int current = SEED;
-    for (int i = 0; i < SIZE; ++i) {
-        current = (a * current + c) % m;
-        data[i] = current;
-    }
-    return data;
-}
+using namespace compute;
 
-constexpr auto p = get_random<int, 1000000>();
+constexpr size_t M = 2048;
+static array<array<float, M>, M> A;
+static decltype(A) B;
+static decltype(A) C;
 
 int main(int argc, char** argv) {
-    auto s = high_resolution_clock::now();
-    cout << duration_cast<milliseconds>(high_resolution_clock::now() - s).count() << "\n";
+    float a, b;
+    a = 1, b = 0;
+    cout << "time : " << perform<milliseconds>(gemm<float, M>, A, B, C, a, b) << "\n";
     return 0;
 }
 
