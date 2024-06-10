@@ -23,7 +23,7 @@ namespace utils {
     std::vector<int> get_current_frequency(int max_cpu);
     std::vector<std::string> get_available_governors(int core_pin);
 
-    void set_governors(int core_pin, std::string governors);
+    void set_governors(int core_pin, const std::string& governors);
     std::string get_governors(int core_pin);
 
     bool set_thread_affinity(int core_id);

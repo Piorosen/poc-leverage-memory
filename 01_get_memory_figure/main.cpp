@@ -5,7 +5,7 @@
 
 using namespace compute;
 
-constexpr size_t M = 2048;
+constexpr size_t M = 512;
 static array<array<float, M>, M> A;
 static decltype(A) B;
 static decltype(A) C;
@@ -13,7 +13,7 @@ static decltype(A) C;
 int main(int argc, char** argv) {
     float a, b;
     a = 1, b = 0;
-    cout << "time : " << perform<milliseconds>(gemm<float, M>, A, B, C, a, b) << "\n";
+    cout << "time : " << perform<milliseconds>(gemm<float, M>, A, B, C, a, b).count() << " ms \n";
     return 0;
 }
 

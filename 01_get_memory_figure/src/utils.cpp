@@ -4,7 +4,7 @@
 #include <fstream>
 
 namespace utils {
-    std::vector<int> get_available_frequency(const int core_pin) {
+    std::vector<int> get_available_frequency(int core_pin) {
         std::vector<int> result;
         char buffer[256];
         snprintf(buffer, 256, "%s%d%s", "/sys/devices/system/cpu/cpu", core_pin, "/cpufreq/scaling_available_frequencies");
@@ -18,7 +18,7 @@ namespace utils {
         return result;
     }
 
-    void set_cpu_frequency(const int core_pin, const int freq) {
+    void set_cpu_frequency(int core_pin, int freq) {
         char buffer[256];
         snprintf(buffer,256, "%s%d%s", "/sys/devices/system/cpu/cpu", core_pin, "/cpufreq/scaling_setspeed");
         std::ofstream file(buffer, std::ios::out);
@@ -26,7 +26,7 @@ namespace utils {
         file.close();
     }
 
-    std::vector<int> get_current_frequency(const int max_cpu) {
+    std::vector<int> get_current_frequency(int max_cpu) {
         int cpu_num = max_cpu;
         char buffer[256] { 0, };
         std::vector<int> result;
@@ -42,7 +42,7 @@ namespace utils {
         return result;
     }
 
-    std::vector<std::string> get_available_governors(const int core_pin) {
+    std::vector<std::string> get_available_governors(int core_pin) {
         char buffer[256];
         std::vector<std::string> result;
         snprintf(buffer, 256, "%s%d%s", "/sys/devices/system/cpu/cpu", core_pin, "/cpufreq/scaling_available_governors");
@@ -56,7 +56,7 @@ namespace utils {
         return result;
     }
 
-    void set_governors(const int core_pin, const std::string& governors) {
+    void set_governors(int core_pin, const std::string& governors) {
         char buffer[256];
         snprintf(buffer, 256, "%s%d%s", "/sys/devices/system/cpu/cpu", core_pin, "/cpufreq/scaling_governor");
 
@@ -65,7 +65,7 @@ namespace utils {
         file.close();
     }
 
-    std::string get_governors(const int core_pin) {
+    std::string get_governors(int core_pin) {
         char buffer[256];
         snprintf(buffer, 256, "%s%d%s", "/sys/devices/system/cpu/cpu", core_pin, "/cpufreq/scaling_governor");
         std::string result;
