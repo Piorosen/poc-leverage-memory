@@ -8,9 +8,10 @@
 
 namespace utils {
     int get_cpu_core_count() { 
+        int coreCount = 0;
+        #if !defined(_WIN64) && !defined(__APPLE__) && !defined(__OpenBSD__)
         const std::string path = "/sys/devices/system/cpu";
         std::regex cpuRegex("^cpu[0-9]+$");
-        int coreCount = 0;
 
         for (const auto& entry : std::filesystem::directory_iterator(path)) {
             if (std::filesystem::is_directory(entry.status())) {
@@ -20,12 +21,13 @@ namespace utils {
                 }
             }
         }
-
+        #endif
         return coreCount;
     }
 
     std::vector<int> get_available_frequency(int core_pin) {
         std::vector<int> result;
+        #if !defined(_WIN64) && !defined(__APPLE__) && !defined(__OpenBSD__)
         char buffer[256];
         snprintf(buffer, 256, "%s%d%s", "/sys/devices/system/cpu/cpu", core_pin, "/cpufreq/scaling_available_frequencies");
         std::ifstream file(buffer, std::ios::in);
@@ -35,21 +37,25 @@ namespace utils {
             result.push_back(mem);
         }
         file.close();
+        #endif
         return result;
     }
 
     void set_cpu_frequency(int core_pin, int freq) {
+        #if !defined(_WIN64) && !defined(__APPLE__) && !defined(__OpenBSD__)
         char buffer[256];
         snprintf(buffer,256, "%s%d%s", "/sys/devices/system/cpu/cpu", core_pin, "/cpufreq/scaling_setspeed");
         std::ofstream file(buffer, std::ios::out);
         file << freq;
         file.close();
+        #endif
     }
 
     std::vector<int> get_current_frequency(int max_cpu) {
         int cpu_num = max_cpu;
         char buffer[256] { 0, };
         std::vector<int> result;
+        #if !defined(_WIN64) && !defined(__APPLE__) && !defined(__OpenBSD__)
         for (int num = 0; num < cpu_num; num++) {
             snprintf(buffer, 256, "%s%d%s", "/sys/devices/system/cpu/cpu", num, "/cpufreq/scaling_cur_freq");
             std::ifstream file(buffer, std::ios::in);
@@ -59,12 +65,14 @@ namespace utils {
             }
             result.push_back(mem);
         }
+        #endif
         return result;
     }
 
     std::vector<std::string> get_available_governors(int core_pin) {
-        char buffer[256];
         std::vector<std::string> result;
+        #if !defined(_WIN64) && !defined(__APPLE__) && !defined(__OpenBSD__)
+        char buffer[256];
         snprintf(buffer, 256, "%s%d%s", "/sys/devices/system/cpu/cpu", core_pin, "/cpufreq/scaling_available_governors");
         std::ifstream file(buffer, std::ios::in);
 
@@ -73,25 +81,30 @@ namespace utils {
             file >> data;
             result.push_back(data);
         }
+        #endif
         return result;
     }
 
     void set_governors(int core_pin, const std::string& governors) {
+        #if !defined(_WIN64) && !defined(__APPLE__) && !defined(__OpenBSD__)
         char buffer[256];
         snprintf(buffer, 256, "%s%d%s", "/sys/devices/system/cpu/cpu", core_pin, "/cpufreq/scaling_governor");
 
         std::ofstream file(buffer, std::ios::out);
         file << governors;
         file.close();
+        #endif
     }
 
     std::string get_governors(int core_pin) {
+        std::string result;
+        #if !defined(_WIN64) && !defined(__APPLE__) && !defined(__OpenBSD__)
         char buffer[256];
         snprintf(buffer, 256, "%s%d%s", "/sys/devices/system/cpu/cpu", core_pin, "/cpufreq/scaling_governor");
-        std::string result;
         std::ifstream file(buffer, std::ios::in);
         file >> result;
         file.close();
+        #endif
         return result;
     }
 
@@ -176,6 +189,8 @@ namespace utils {
     }
 
     void remove_cache() {
+        #if !defined(_WIN64) && !defined(__APPLE__) && !defined(__OpenBSD__)
         system("sync; echo 3 > /proc/sys/vm/drop_caches");
+        #endif
     }
 }
